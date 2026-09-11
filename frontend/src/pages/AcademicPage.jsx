@@ -99,7 +99,6 @@ export default function AcademicPage() {
 
   // Load students
   const loadStudents = async () => {
-    setLoading(true);
     try {
       const res = await api.getStudents({
         search: studentSearch,
@@ -110,14 +109,11 @@ export default function AcademicPage() {
       if (res.success) setStudents(res.data.students);
     } catch (err) {
       setError(err.message);
-    } finally {
-      setLoading(false);
     }
   };
 
   // Load faculty
   const loadFaculty = async () => {
-    setLoading(true);
     try {
       const res = await api.getFaculty({
         search: facultySearch,
@@ -126,14 +122,11 @@ export default function AcademicPage() {
       if (res.success) setFaculty(res.data.faculty);
     } catch (err) {
       setError(err.message);
-    } finally {
-      setLoading(false);
     }
   };
 
   // Load courses
   const loadCourses = async () => {
-    setLoading(true);
     try {
       const res = await api.getCourses({
         search: courseSearch,
@@ -142,16 +135,43 @@ export default function AcademicPage() {
       if (res.success) setCourses(res.data.courses);
     } catch (err) {
       setError(err.message);
-    } finally {
-      setLoading(false);
     }
   };
 
+  // Load all tab datasets on initial mount
   useEffect(() => {
-    if (activeTab === 'students') loadStudents();
-    else if (activeTab === 'faculty') loadFaculty();
-    else if (activeTab === 'courses') loadCourses();
-  }, [activeTab, studentSearch, studentProgram, studentSemester, studentStatus, facultySearch, facultyDesignation, courseSearch, courseSemester]);
+    const loadAll = async () => {
+      setLoading(true);
+      try {
+        const [sRes, fRes, cRes] = await Promise.all([
+          api.getStudents({ search: studentSearch, program: studentProgram, semester: studentSemester, status: studentStatus }),
+          api.getFaculty({ search: facultySearch, designation: facultyDesignation }),
+          api.getCourses({ search: courseSearch, semester: courseSemester })
+        ]);
+        if (sRes.success) setStudents(sRes.data.students);
+        if (fRes.success) setFaculty(fRes.data.faculty);
+        if (cRes.success) setCourses(cRes.data.courses);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadAll();
+  }, []);
+
+  // Reactive filters per tab
+  useEffect(() => {
+    loadStudents();
+  }, [studentSearch, studentProgram, studentSemester, studentStatus]);
+
+  useEffect(() => {
+    loadFaculty();
+  }, [facultySearch, facultyDesignation]);
+
+  useEffect(() => {
+    loadCourses();
+  }, [courseSearch, courseSemester]);
 
   // View Student details
   const handleViewStudent = async (id) => {

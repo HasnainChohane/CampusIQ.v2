@@ -202,7 +202,7 @@ export async function generateReport(req, res, next) {
           headers: ['Category', 'Total Expenditure', '% of Total Outflow'],
           rows: topCategories.map(c => [
             c.category,
-            `$${Number(c.totalAmount).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
+            `Rs. ${Number(c.totalAmount).toLocaleString(undefined, { minimumFractionDigits: 0 })}`,
             totalExpenses > 0 ? `${Math.round((Number(c.totalAmount) / totalExpenses) * 100)}%` : '0%'
           ])
         },
@@ -214,7 +214,7 @@ export async function generateReport(req, res, next) {
             new Date(e.date).toLocaleDateString(),
             e.category,
             e.description || 'N/A',
-            `$${Number(e.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+            `Rs. ${Number(e.amount).toLocaleString(undefined, { minimumFractionDigits: 0 })}`
           ])
         }
       ];
@@ -268,7 +268,7 @@ export async function generateReport(req, res, next) {
             a.item_name,
             a.category,
             a.total_quantity.toString(),
-            `$${Number(a.purchase_value).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
+            `Rs. ${Number(a.purchase_value).toLocaleString(undefined, { minimumFractionDigits: 0 })}`,
             a.condition,
             a.location || 'Central Depot'
           ])

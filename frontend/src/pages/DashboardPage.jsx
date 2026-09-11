@@ -43,6 +43,14 @@ export default function DashboardPage({ onNavigate }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const formatInsightText = (text) => {
+    if (!text) return '';
+    return text.replace(/(?:\$|Rs\.?\s?)([0-9,]+(?:\.[0-9]+)?)/g, (match, p1) => {
+      const num = parseFloat(p1.replace(/,/g, ''));
+      return formatCurrency(num);
+    });
+  };
+
 
   const loadDashboardData = async () => {
     setLoading(true);
@@ -264,7 +272,7 @@ export default function DashboardPage({ onNavigate }) {
                   {insight.title}
                 </h4>
                 <p style={{ fontSize: '0.8rem', color: '#cbd5e1', lineHeight: 1.5 }}>
-                  {insight.description}
+                  {formatInsightText(insight.description)}
                 </p>
               </div>
             );

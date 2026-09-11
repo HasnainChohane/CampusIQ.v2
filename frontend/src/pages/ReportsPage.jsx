@@ -193,9 +193,9 @@ export default function ReportsPage() {
         </div>
 
         {/* Options Row */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', background: '#ffffff', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-          <div style={{ flex: '1 1 300px' }}>
-            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#475569', marginBottom: '0.25rem' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end', background: '#ffffff', padding: '1.1rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid #e2e8f0', boxShadow: 'var(--shadow-sm)' }}>
+          <div style={{ flex: '1 1 320px' }}>
+            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '0.4rem' }}>
               Custom Report Title (Optional)
             </label>
             <input
@@ -204,15 +204,15 @@ export default function ReportsPage() {
               value={customTitle}
               onChange={e => setCustomTitle(e.target.value)}
               className="input-field"
-              style={{ width: '100%' }}
+              style={{ width: '100%', padding: '0.65rem 0.9rem', fontSize: '0.875rem' }}
             />
           </div>
-          <div style={{ alignSelf: 'flex-end' }}>
+          <div style={{ flexShrink: 0 }}>
             <button
               onClick={handleGenerate}
               disabled={generating}
               className="btn btn-primary"
-              style={{ minWidth: '180px', display: 'flex', justifyContent: 'center' }}
+              style={{ minWidth: '180px', padding: '0.65rem 1.2rem', display: 'flex', justifyContent: 'center' }}
             >
               {generating ? (
                 <>
@@ -405,9 +405,9 @@ export default function ReportsPage() {
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
             {/* Search Filter */}
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', width: '220px' }}>
               <Search size={15} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
               <input
                 type="text"
@@ -415,7 +415,7 @@ export default function ReportsPage() {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 className="input-field"
-                style={{ paddingLeft: '32px', width: '180px', fontSize: '0.8rem' }}
+                style={{ paddingLeft: '32px', width: '100%', fontSize: '0.85rem' }}
               />
             </div>
 
@@ -424,7 +424,7 @@ export default function ReportsPage() {
               value={filterType}
               onChange={e => setFilterType(e.target.value)}
               className="input-field"
-              style={{ fontSize: '0.8rem' }}
+              style={{ width: '160px', fontSize: '0.85rem' }}
             >
               <option value="all">All Report Types</option>
               <option value="academic">Academic</option>

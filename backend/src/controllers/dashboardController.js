@@ -170,7 +170,7 @@ export async function getDashboardStats(req, res, next) {
       type: 'info',
       category: 'Fiscal Health',
       title: 'Budget Utilization on Target',
-      description: `Department has utilized $${totalExpenses.toLocaleString()} (${budgetUtilizationPct}%) of its $${budgetAllocated.toLocaleString()} annual operating budget. External revenue stands at $${totalRevenue.toLocaleString()} (${revenueGoalProgressPct}% of annual target).`
+      description: `Department has utilized Rs. ${totalExpenses.toLocaleString()} (${budgetUtilizationPct}%) of its Rs. ${budgetAllocated.toLocaleString()} annual operating budget. External revenue stands at Rs. ${totalRevenue.toLocaleString()} (${revenueGoalProgressPct}% of annual target).`
     });
 
     // Inventory alert
