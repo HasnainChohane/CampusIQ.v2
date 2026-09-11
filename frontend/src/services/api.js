@@ -98,7 +98,38 @@ export const api = {
   createRequest: (data) => request('/requests', { method: 'POST', body: JSON.stringify(data) }),
   updateRequestStatus: (id, data) => request(`/requests/${id}/status`, { method: 'POST', body: JSON.stringify(data) }),
   addRequestComment: (id, data) => request(`/requests/${id}/comments`, { method: 'POST', body: JSON.stringify(data) }),
-  analyzeRequest: (data) => request('/requests/analyze', { method: 'POST', body: JSON.stringify(data) })
+  analyzeRequest: (data) => request('/requests/analyze', { method: 'POST', body: JSON.stringify(data) }),
+
+  // Finance & Budget Module
+  getFinanceOverview: () => request('/finance/overview'),
+  getRevenues: (params = {}) => {
+    const query = new URLSearchParams(params).toString();
+    return request(`/finance/revenue${query ? `?${query}` : ''}`);
+  },
+  createRevenue: (data) => request('/finance/revenue', { method: 'POST', body: JSON.stringify(data) }),
+  updateRevenue: (id, data) => request(`/finance/revenue/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteRevenue: (id) => request(`/finance/revenue/${id}`, { method: 'DELETE' }),
+  getExpenses: (params = {}) => {
+    const query = new URLSearchParams(params).toString();
+    return request(`/finance/expenses${query ? `?${query}` : ''}`);
+  },
+  createExpense: (data) => request('/finance/expenses', { method: 'POST', body: JSON.stringify(data) }),
+  updateExpense: (id, data) => request(`/finance/expenses/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteExpense: (id) => request(`/finance/expenses/${id}`, { method: 'DELETE' }),
+  getBudgets: () => request('/finance/budgets'),
+  createBudget: (data) => request('/finance/budgets', { method: 'POST', body: JSON.stringify(data) }),
+  getRevenueGoals: () => request('/finance/goals'),
+  createRevenueGoal: (data) => request('/finance/goals', { method: 'POST', body: JSON.stringify(data) }),
+
+  // Reports & PDF Module
+  getReports: () => request('/reports'),
+  getReportById: (id) => request(`/reports/${id}`),
+  generateReport: (data) => request('/reports/generate', { method: 'POST', body: JSON.stringify(data) }),
+
+  // AI Assistant & Grounded Q&A
+  getAiSuggestions: () => request('/ai/suggestions'),
+  queryAi: (data) => request('/ai/query', { method: 'POST', body: JSON.stringify(data) })
 };
 
 export default api;
+

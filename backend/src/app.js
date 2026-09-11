@@ -8,6 +8,9 @@ import dashboardRoutes from './routes/dashboardRoutes.js';
 import academicRoutes from './routes/academicRoutes.js';
 import inventoryRoutes from './routes/inventoryRoutes.js';
 import requestRoutes from './routes/requestRoutes.js';
+import financeRoutes from './routes/financeRoutes.js';
+import reportRoutes from './routes/reportRoutes.js';
+import aiAssistantRoutes from './routes/aiAssistantRoutes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 const app = express();
@@ -32,9 +35,13 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/academic', academicRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/requests', requestRoutes);
+app.use('/api/finance', financeRoutes);
+app.use('/api/reports', reportRoutes);
+app.use('/api/ai', aiAssistantRoutes);
 
 // Fallback & Error Handling
 app.use(notFoundHandler);
 app.use(errorHandler);
 
 export default app;
+

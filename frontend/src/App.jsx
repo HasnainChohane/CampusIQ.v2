@@ -42,21 +42,22 @@ function AuthenticatedApp() {
       case 'dashboard':
         return <DashboardPage onNavigate={setCurrentView} />;
       case 'academic':
-        return <AcademicPage />;
+        return <AcademicPage onNavigate={setCurrentView} />;
       case 'inventory':
-        return <InventoryPage />;
+        return <InventoryPage onNavigate={setCurrentView} />;
       case 'requests':
-        return <RequestsPage />;
+        return <RequestsPage onNavigate={setCurrentView} />;
       case 'finance':
-        return <FinancePage />;
+        return <FinancePage onNavigate={setCurrentView} />;
       case 'reports':
-        return <ReportsPage />;
+        return <ReportsPage onNavigate={setCurrentView} />;
       case 'ai-assistant':
-        return <AiAssistantPage />;
+        return <AiAssistantPage onNavigate={setCurrentView} />;
       case 'health':
-        return <HealthDashboard />;
+        return <HealthDashboard onNavigate={setCurrentView} />;
       default:
         return <DashboardPage onNavigate={setCurrentView} />;
+
     }
   };
 
