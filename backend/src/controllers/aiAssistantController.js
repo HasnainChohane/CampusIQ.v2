@@ -200,16 +200,16 @@ export async function processAiQuery(req, res, next) {
       const netBalance = totalRevenue - totalExpenses;
       const margin = totalRevenue > 0 ? Math.round((netBalance / totalRevenue) * 100) : 0;
 
-      responsePayload.answer = `Current fiscal standing shows **$${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })}** in total revenue against **$${totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 2 })}** in operational expenses, generating a **net positive surplus of $${netBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}** (${margin}% profit margin). The largest expense category is **'${byCat[0]?.category || 'General'}'** ($${Number(byCat[0]?.total || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}).`;
+      responsePayload.answer = `Current fiscal standing shows **Rs. ${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 0 })}** in total revenue against **Rs. ${totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 0 })}** in operational expenses, generating a **net positive surplus of Rs. ${netBalance.toLocaleString(undefined, { minimumFractionDigits: 0 })}** (${margin}% profit margin). The largest expense category is **'${byCat[0]?.category || 'General'}'** (Rs. ${Number(byCat[0]?.total || 0).toLocaleString(undefined, { minimumFractionDigits: 0 })}).`;
       responsePayload.metrics = [
-        { label: 'Total Revenue', value: `$${totalRevenue.toLocaleString()}`, color: 'emerald' },
-        { label: 'Total Expenses', value: `$${totalExpenses.toLocaleString()}`, color: 'rose' },
-        { label: 'Net Surplus', value: `$${netBalance.toLocaleString()}`, color: netBalance >= 0 ? 'emerald' : 'rose' }
+        { label: 'Total Revenue', value: `Rs. ${totalRevenue.toLocaleString()}`, color: 'emerald' },
+        { label: 'Total Expenses', value: `Rs. ${totalExpenses.toLocaleString()}`, color: 'rose' },
+        { label: 'Net Surplus', value: `Rs. ${netBalance.toLocaleString()}`, color: netBalance >= 0 ? 'emerald' : 'rose' }
       ];
-      responsePayload.columns = ['Expense Category', 'Total Amount', '% Share'];
+      responsePayload.columns = ['Expense Category', 'Total Amount (PKR)', '% Share'];
       responsePayload.data = byCat.map(c => [
         c.category,
-        `$${Number(c.total).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
+        `Rs. ${Number(c.total).toLocaleString(undefined, { minimumFractionDigits: 0 })}`,
         totalExpenses > 0 ? `${Math.round((Number(c.total) / totalExpenses) * 100)}%` : '0%'
       ]);
       responsePayload.actionSuggestion = {
@@ -263,18 +263,18 @@ export async function processAiQuery(req, res, next) {
       const totalQty = inventory.reduce((acc, i) => acc + Number(i.total_quantity), 0);
       const totalVal = inventory.reduce((acc, i) => acc + Number(i.purchase_value), 0);
 
-      responsePayload.answer = `Department inventory tracks **${inventory.length} asset items** (${totalQty} total units) valued at **$${totalVal.toLocaleString(undefined, { minimumFractionDigits: 2 })}**. Currently, **${damaged.length} asset line(s)** (${damaged.reduce((a, d) => a + Number(d.total_quantity), 0)} units) are tagged as **Damaged** and require maintenance or replacement.`;
+      responsePayload.answer = `Department inventory tracks **${inventory.length} asset items** (${totalQty} total units) valued at **Rs. ${totalVal.toLocaleString(undefined, { minimumFractionDigits: 0 })}**. Currently, **${damaged.length} asset line(s)** (${damaged.reduce((a, d) => a + Number(d.total_quantity), 0)} units) are tagged as **Damaged** and require maintenance or replacement.`;
       responsePayload.metrics = [
-        { label: 'Total Asset Valuation', value: `$${totalVal.toLocaleString()}`, color: 'emerald' },
+        { label: 'Total Asset Valuation', value: `Rs. ${totalVal.toLocaleString()}`, color: 'emerald' },
         { label: 'Total Hardware Units', value: totalQty, color: 'blue' },
         { label: 'Damaged Units', value: damaged.reduce((a, d) => a + Number(d.total_quantity), 0), color: damaged.length > 0 ? 'rose' : 'emerald' }
       ];
-      responsePayload.columns = ['Item Name', 'Category', 'Qty', 'Total Value', 'Condition', 'Location'];
+      responsePayload.columns = ['Item Name', 'Category', 'Qty', 'Total Value (PKR)', 'Condition', 'Location'];
       responsePayload.data = inventory.map(i => [
         i.item_name,
         i.category,
         i.total_quantity.toString(),
-        `$${Number(i.purchase_value).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
+        `Rs. ${Number(i.purchase_value).toLocaleString(undefined, { minimumFractionDigits: 0 })}`,
         i.condition,
         i.location || 'Central Depot'
       ]);
@@ -294,20 +294,21 @@ export async function processAiQuery(req, res, next) {
       const [expRows] = await pool.query(`SELECT COALESCE(SUM(amount), 0) AS total FROM expenses WHERE department_id = ?`, [departmentId]);
       const exp = expRows[0] || {};
 
-      responsePayload.answer = `Department Intelligence Overview: The department is actively managing **${studentCount.total || 0} students**, **${facultyCount.total || 0} faculty members**, **$${Number(rev.total || 0).toLocaleString()} in revenue**, and **$${Number(exp.total || 0).toLocaleString()} in operating expenses**. Try asking a specific question about course capacity, faculty workloads, pending purchases, or damaged inventory!`;
+      responsePayload.answer = `Department Intelligence Overview: The department is actively managing **${studentCount.total || 0} students**, **${facultyCount.total || 0} faculty members**, **Rs. ${Number(rev.total || 0).toLocaleString()} in revenue**, and **Rs. ${Number(exp.total || 0).toLocaleString()} in operating expenses**. Try asking a specific question about course capacity, faculty workloads, pending purchases, or damaged inventory!`;
       responsePayload.metrics = [
         { label: 'Enrolled Students', value: studentCount.total || 0, color: 'blue' },
         { label: 'Faculty Members', value: facultyCount.total || 0, color: 'purple' },
-        { label: 'Net Fiscal Balance', value: `$${(Number(rev.total || 0) - Number(exp.total || 0)).toLocaleString()}`, color: 'emerald' }
+        { label: 'Net Fiscal Balance', value: `Rs. ${(Number(rev.total || 0) - Number(exp.total || 0)).toLocaleString()}`, color: 'emerald' }
       ];
       responsePayload.columns = ['Department Metric', 'Current Live Value', 'Status'];
       responsePayload.data = [
         ['Registered Students', (studentCount.total || 0).toString(), 'Active'],
         ['Teaching Faculty', (facultyCount.total || 0).toString(), 'Active'],
-        ['Total Revenue', `$${Number(rev.total || 0).toLocaleString()}`, 'Recorded'],
-        ['Total Expenses', `$${Number(exp.total || 0).toLocaleString()}`, 'Recorded']
+        ['Total Revenue', `Rs. ${Number(rev.total || 0).toLocaleString()}`, 'Recorded'],
+        ['Total Expenses', `Rs. ${Number(exp.total || 0).toLocaleString()}`, 'Recorded']
       ];
     }
+
 
     res.json({
       success: true,

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useSettings } from '../context/SettingsContext';
 import { 
   Building2, 
   LayoutDashboard, 
@@ -16,7 +17,9 @@ import {
   Menu, 
   X,
   Shield,
-  Layers
+  Layers,
+  Settings,
+  Coins
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -31,16 +34,18 @@ const NAV_ITEMS = [
 ];
 
 const ROLE_OPTIONS = [
-  { email: 'admin@departmenthub.edu', label: 'Admin (Dr. Vance)', role: 'admin' },
-  { email: 'officer@departmenthub.edu', label: 'Officer (Marcus)', role: 'officer' },
-  { email: 'faculty@departmenthub.edu', label: 'Faculty (Dr. Turing)', role: 'faculty' },
-  { email: 'staff@departmenthub.edu', label: 'Staff (Sarah)', role: 'staff' },
+  { email: 'admin@departmenthub.edu', label: 'Admin (Dr. Khurram Nadeem)', role: 'admin' },
+  { email: 'officer@departmenthub.edu', label: 'Officer (Syed Muhammad Ali)', role: 'officer' },
+  { email: 'faculty@departmenthub.edu', label: 'Faculty (Dr. Ayesha Khan)', role: 'faculty' },
+  { email: 'staff@departmenthub.edu', label: 'Staff (Muhammad Rizwan)', role: 'staff' },
 ];
 
 export default function AppLayout({ currentView, onNavigate, children }) {
   const { user, role, logout, switchUserFast } = useAuth();
+  const { settings, setIsSettingsOpen } = useSettings();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
+
 
   const visibleNav = NAV_ITEMS.filter(item => item.roles.includes(role || 'faculty'));
 
@@ -183,18 +188,62 @@ export default function AppLayout({ currentView, onNavigate, children }) {
           {/* Left: Current Active Title & Dept */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem' }}>
-              <span className="badge badge-primary" style={{ fontWeight: 600 }}>
-                {user?.department_code || 'CSE'} Department
+              <span className="badge badge-primary" style={{ fontWeight: 700 }}>
+                {user?.department_code || 'CS-SE'}
               </span>
               <span style={{ color: 'var(--text-subtle)' }}>•</span>
-              <span style={{ color: 'var(--text-muted)', fontWeight: 500 }}>
-                {user?.department_name || 'Department of Computer Science & Engineering'}
+              <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>
+                {settings?.departmentName || user?.department_name || 'Department of Computer Science & Software Engineering'}
+              </span>
+              <span style={{ color: '#94a3b8', fontSize: '0.75rem', display: 'none', md: 'inline' }}>
+                ({settings?.universityName})
               </span>
             </div>
           </div>
 
-          {/* Right: Quick Demo Role Switcher & Profile */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          {/* Right: Settings Gear, Currency Pill, Quick Demo Role Switcher & Profile */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {/* Active Currency Badge / Fast Toggle */}
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="btn btn-secondary btn-sm"
+              title="Click to change currency or settings"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                background: settings.currency === 'PKR' ? '#ecfdf5' : '#eff6ff',
+                color: settings.currency === 'PKR' ? '#065f46' : '#1d4ed8',
+                border: settings.currency === 'PKR' ? '1px solid #a7f3d0' : '1px solid #bfdbfe',
+                borderRadius: '20px',
+                padding: '4px 10px',
+                cursor: 'pointer'
+              }}
+            >
+              <Coins size={14} />
+              <span>Currency: {settings.currency} ({settings.currency === 'PKR' ? 'Rs.' : settings.currency === 'USD' ? '$' : '€'})</span>
+            </button>
+
+            {/* Platform Settings Gear Icon */}
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="btn btn-secondary btn-sm"
+              title="Platform Settings (Currency, Institution, Regional Defaults)"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                padding: '0.4rem 0.75rem',
+                fontSize: '0.8rem',
+                fontWeight: 600
+              }}
+            >
+              <Settings size={15} className="text-slate-600" />
+              <span>Settings</span>
+            </button>
+
             {/* Quick Role Switcher (Crucial for live Hackathon evaluation!) */}
             <div style={{ position: 'relative' }}>
               <button
@@ -214,7 +263,7 @@ export default function AppLayout({ currentView, onNavigate, children }) {
                 }}
               >
                 <Shield size={14} />
-                <span>Role: {roleStyle.label}</span>
+                <span>{roleStyle.label}</span>
                 <ChevronDown size={14} />
               </button>
 
@@ -227,7 +276,7 @@ export default function AppLayout({ currentView, onNavigate, children }) {
                   border: '1px solid var(--border-light)',
                   borderRadius: 'var(--radius-md)',
                   boxShadow: 'var(--shadow-lg)',
-                  width: '230px',
+                  width: '260px',
                   padding: '0.5rem',
                   zIndex: 100,
                   display: 'flex',
@@ -277,6 +326,7 @@ export default function AppLayout({ currentView, onNavigate, children }) {
             </button>
           </div>
         </header>
+
 
         {/* Page Content Body */}
         <main style={{ flex: 1, padding: '1.75rem 2rem', overflowY: 'auto' }}>

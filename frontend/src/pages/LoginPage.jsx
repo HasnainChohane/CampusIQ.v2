@@ -15,8 +15,8 @@ import {
 const DEMO_ACCOUNTS = [
   {
     role: 'admin',
-    title: 'Administrator',
-    name: 'Dr. Eleanor Vance',
+    title: 'Administrator / Dean',
+    name: 'Dr. Khurram Nadeem',
     email: 'admin@departmenthub.edu',
     desc: 'Full administrative access, user permissions, finance & reports',
     badgeColor: 'badge-primary'
@@ -24,15 +24,15 @@ const DEMO_ACCOUNTS = [
   {
     role: 'officer',
     title: 'Department Officer',
-    name: 'Marcus Thorne',
+    name: 'Syed Muhammad Ali',
     email: 'officer@departmenthub.edu',
     desc: 'Review & approve requests, inventory management & finance logs',
     badgeColor: 'badge-warning'
   },
   {
     role: 'faculty',
-    title: 'Faculty / Chair',
-    name: 'Dr. Alan Turing',
+    title: 'Faculty / HoD CS',
+    name: 'Dr. Ayesha Khan',
     email: 'faculty@departmenthub.edu',
     desc: 'Submit requests, monitor teaching workload & assigned courses',
     badgeColor: 'badge-success'
@@ -40,12 +40,13 @@ const DEMO_ACCOUNTS = [
   {
     role: 'staff',
     title: 'Staff Member',
-    name: 'Sarah Jenkins',
+    name: 'Muhammad Rizwan',
     email: 'staff@departmenthub.edu',
     desc: 'Submit purchase/maintenance requests & track department assets',
     badgeColor: 'badge-primary'
   }
 ];
+
 
 export default function LoginPage() {
   const { login } = useAuth();

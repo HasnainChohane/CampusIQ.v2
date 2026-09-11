@@ -35,6 +35,7 @@ import {
 } from 'recharts';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { useSettings } from '../context/SettingsContext';
 
 const COLORS = ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#14b8a6', '#6366f1'];
 const EXPENSE_CATEGORIES = [
@@ -53,6 +54,7 @@ const EXPENSE_CATEGORIES = [
 
 export default function FinancePage() {
   const { role } = useAuth();
+  const { formatCurrency, currency } = useSettings();
   const canManage = role === 'admin' || role === 'officer';
 
   const [activeTab, setActiveTab] = useState('overview'); // 'overview', 'revenue', 'expenses', 'budgets'
@@ -284,10 +286,10 @@ export default function FinancePage() {
             <ArrowUpRight size={16} className="text-emerald-500" />
           </div>
           <div style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.4rem', color: '#047857' }}>
-            ${totals.totalRevenue?.toLocaleString()}
+            {formatCurrency(totals.totalRevenue || 0)}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Target: ${totals.targetRevenue?.toLocaleString()} ({totals.goalProgressPct}% achieved)
+            Target: {formatCurrency(totals.targetRevenue || 0)} ({totals.goalProgressPct}% achieved)
           </div>
         </div>
 
@@ -297,7 +299,7 @@ export default function FinancePage() {
             <ArrowDownRight size={16} className="text-red-500" />
           </div>
           <div style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.4rem', color: '#dc2626' }}>
-            ${totals.totalExpenses?.toLocaleString()}
+            {formatCurrency(totals.totalExpenses || 0)}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
             Across {expenses.length} logged expense items
@@ -310,7 +312,7 @@ export default function FinancePage() {
             <DollarSign size={16} className="text-blue-500" />
           </div>
           <div style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.4rem', color: 'var(--primary)' }}>
-            ${totals.netBalance?.toLocaleString()}
+            {formatCurrency(totals.netBalance || 0)}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--success)' }}>
             ● Healthy Operating Surplus
@@ -326,7 +328,7 @@ export default function FinancePage() {
             {totals.budgetUtilizationPct}%
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            ${totals.remainingBudget?.toLocaleString()} unallocated budget
+            {formatCurrency(totals.remainingBudget || 0)} unallocated budget
           </div>
         </div>
       </div>
@@ -362,8 +364,8 @@ export default function FinancePage() {
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                     <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-                    <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `$${v/1000}k`} />
-                    <Tooltip formatter={(v) => [`$${Number(v).toLocaleString()}`, '']} />
+                    <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => formatCurrency(v)} />
+                    <Tooltip formatter={(v) => [formatCurrency(Number(v)), '']} />
                     <Legend wrapperStyle={{ fontSize: '12px' }} />
                     <Area type="monotone" dataKey="revenue" name="Revenue" stroke="#10b981" fillOpacity={1} fill="url(#colorRevFin)" />
                     <Area type="monotone" dataKey="expenses" name="Expenses" stroke="#ef4444" fillOpacity={1} fill="url(#colorExpFin)" />
@@ -399,7 +401,7 @@ export default function FinancePage() {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(v) => [`$${Number(v).toLocaleString()}`, '']} />
+                    <Tooltip formatter={(v) => [formatCurrency(Number(v)), '']} />
                     <Legend wrapperStyle={{ fontSize: '11px' }} />
                   </PieChart>
                 </ResponsiveContainer>
@@ -466,7 +468,7 @@ export default function FinancePage() {
                       <td>{new Date(r.date).toLocaleDateString()}</td>
                       <td>
                         <strong style={{ color: '#047857', fontFamily: 'var(--font-mono)' }}>
-                          +${parseFloat(r.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          +{formatCurrency(r.amount)}
                         </strong>
                       </td>
                       {canManage && (
@@ -589,7 +591,7 @@ export default function FinancePage() {
                       <td>{new Date(e.date).toLocaleDateString()}</td>
                       <td>
                         <strong style={{ color: '#dc2626', fontFamily: 'var(--font-mono)' }}>
-                          -${parseFloat(e.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          -{formatCurrency(e.amount)}
                         </strong>
                       </td>
                       {canManage && (
@@ -658,7 +660,7 @@ export default function FinancePage() {
                 </div>
 
                 <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '0.5rem' }}>
-                  ${parseFloat(b.allocated_amount).toLocaleString()}
+                  {formatCurrency(b.allocated_amount)}
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                   Departmental operating allocation for hardware, faculty grants, and student lab infrastructure.
@@ -682,7 +684,7 @@ export default function FinancePage() {
                 </div>
 
                 <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#047857', marginBottom: '0.5rem' }}>
-                  ${parseFloat(g.target_amount).toLocaleString()}
+                  {formatCurrency(g.target_amount)}
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                   External grant, corporate tech partnership, and corporate training workshop revenue benchmark.
@@ -719,7 +721,7 @@ export default function FinancePage() {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.3rem' }}>Amount ($)</label>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.3rem' }}>Amount ({currency})</label>
                   <input
                     type="number"
                     step="0.01"
@@ -781,7 +783,7 @@ export default function FinancePage() {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.3rem' }}>Amount ($)</label>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.3rem' }}>Amount ({currency})</label>
                   <input
                     type="number"
                     step="0.01"
@@ -840,7 +842,7 @@ export default function FinancePage() {
                 />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.3rem' }}>Allocated Budget ($)</label>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.3rem' }}>Allocated Budget ({currency})</label>
                 <input
                   type="number"
                   step="0.01"

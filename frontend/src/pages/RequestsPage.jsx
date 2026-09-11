@@ -25,12 +25,14 @@ import {
 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { useSettings } from '../context/SettingsContext';
 
 const REQUEST_TYPES = ['All', 'purchase', 'leave', 'maintenance', 'general'];
 const STATUS_OPTIONS = ['All', 'pending', 'under_review', 'approved', 'rejected', 'returned'];
 
 export default function RequestsPage() {
   const { user, role } = useAuth();
+  const { formatCurrency, currency } = useSettings();
   const isReviewer = role === 'admin' || role === 'officer';
 
   const [requests, setRequests] = useState([]);
@@ -173,7 +175,7 @@ export default function RequestsPage() {
 
       let alertMsg = `Request status updated to ${newStatus}!`;
       if (res.data?.purchaseSync) {
-        alertMsg += `\n✔ Expense of $${res.data.purchaseSync.amount.toLocaleString()} recorded.\n✔ Inventory updated.`;
+        alertMsg += `\n✔ Expense of ${formatCurrency(res.data.purchaseSync.amount)} recorded.\n✔ Inventory updated.`;
       }
       alert(alertMsg);
 
@@ -596,7 +598,7 @@ export default function RequestsPage() {
                       <span className="badge badge-success">Qty: {aiPreview.ai_extracted_data.quantity}</span>
                     )}
                     {aiPreview.ai_extracted_data?.estimated_cost && (
-                      <span className="badge badge-success">Est: ${aiPreview.ai_extracted_data.estimated_cost.toLocaleString()}</span>
+                      <span className="badge badge-success">Est: {formatCurrency(aiPreview.ai_extracted_data.estimated_cost)}</span>
                     )}
                   </div>
                 </div>
@@ -722,7 +724,7 @@ export default function RequestsPage() {
                     <span>Connected Purchase Synced</span>
                   </div>
                   <p style={{ fontSize: '0.8rem', color: '#047857' }}>
-                    Expense record #{selectedRequest.linkedExpense.expense_id} created for ${parseFloat(selectedRequest.linkedExpense.amount).toLocaleString()}. Inventory catalog updated.
+                    Expense record #{selectedRequest.linkedExpense.expense_id} created for {formatCurrency(selectedRequest.linkedExpense.amount)}. Inventory catalog updated.
                   </p>
                 </div>
               )}

@@ -4,15 +4,15 @@ import { pool } from '../db/connection.js';
 function generateAiReportSummary(type, data) {
   if (type === 'academic') {
     const { totalStudents, avgGpa, highRiskCount, totalCourses, avgEnrollmentRate, overloadedFaculty } = data.metrics;
-    return `Academic Performance Summary: The department currently serves ${totalStudents} registered students with an overall average GPA of ${avgGpa.toFixed(2)}. Course offerings span ${totalCourses} active classes operating at ${avgEnrollmentRate}% average capacity. Attention required: ${highRiskCount} student(s) have a GPA below 2.50, and ${overloadedFaculty} faculty member(s) exceed the 12 credit hour standard workload threshold.`;
+    return `Academic Performance Summary: The department currently serves ${totalStudents} registered students with an overall average GPA of ${avgGpa.toFixed(2)}. Course offerings span ${totalCourses} active classes operating at ${avgEnrollmentRate}% average capacity. Attention required: ${highRiskCount} student(s) have a GPA below 2.50, and ${overloadedFaculty} faculty member(s) exceed the 12 credit hour HEC standard workload threshold.`;
   }
   if (type === 'financial') {
     const { totalRevenue, totalExpenses, netIncome, marginPct, budgetUtilizationPct, topExpenseCategory } = data.metrics;
-    return `Fiscal Health Assessment: Year-to-date total revenue reached $${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })}, against operating expenses of $${totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 2 })}, yielding a positive net balance of $${netIncome.toLocaleString(undefined, { minimumFractionDigits: 2 })} (${marginPct}% net margin). Department budget utilization stands at ${budgetUtilizationPct}%, with '${topExpenseCategory}' representing the highest cost category.`;
+    return `Fiscal Health Assessment: Year-to-date total revenue reached Rs. ${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 0 })}, against operating expenses of Rs. ${totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 0 })}, yielding a positive net balance of Rs. ${netIncome.toLocaleString(undefined, { minimumFractionDigits: 0 })} (${marginPct}% net margin). Department budget utilization stands at ${budgetUtilizationPct}%, with '${topExpenseCategory}' representing the highest cost category.`;
   }
   if (type === 'inventory') {
     const { totalItems, totalQuantity, totalValuation, damagedCount, unassignedCount } = data.metrics;
-    return `Asset & Inventory Overview: Managing ${totalItems} distinct asset categories encompassing ${totalQuantity} total units with a cumulative asset valuation of $${totalValuation.toLocaleString(undefined, { minimumFractionDigits: 2 })}. Operational readiness: ${damagedCount} unit(s) are flagged as damaged/requiring maintenance, while ${unassignedCount} units remain in central storage available for allocation.`;
+    return `Asset & Inventory Overview: Managing ${totalItems} distinct asset categories encompassing ${totalQuantity} total units with a cumulative asset valuation of Rs. ${totalValuation.toLocaleString(undefined, { minimumFractionDigits: 0 })}. Operational readiness: ${damagedCount} unit(s) are flagged as damaged/requiring maintenance, while ${unassignedCount} units remain in central storage available for allocation.`;
   }
   if (type === 'requests') {
     const { totalRequests, pendingCount, approvedCount, rejectedCount } = data.metrics;
@@ -21,6 +21,7 @@ function generateAiReportSummary(type, data) {
   // Comprehensive / Department Overview
   return `Comprehensive Department Intelligence: All operational modules are synchronized. Academic metrics show steady GPA performance, operating budgets maintain positive margins, inventory records show robust equipment readiness, and approval workflows are actively processing requests.`;
 }
+
 
 // Get list of previously generated reports
 export async function getReports(req, res, next) {

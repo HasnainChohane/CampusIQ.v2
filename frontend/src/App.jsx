@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { SettingsProvider } from './context/SettingsContext';
 import LoginPage from './pages/LoginPage';
 import AppLayout from './layouts/AppLayout';
 import HealthDashboard from './components/HealthDashboard';
@@ -10,6 +11,7 @@ import RequestsPage from './pages/RequestsPage';
 import FinancePage from './pages/FinancePage';
 import ReportsPage from './pages/ReportsPage';
 import AiAssistantPage from './pages/AiAssistantPage';
+import SettingsModal from './components/SettingsModal';
 
 function AuthenticatedApp() {
   const { isAuthenticated, loading } = useAuth();
@@ -57,21 +59,26 @@ function AuthenticatedApp() {
         return <HealthDashboard onNavigate={setCurrentView} />;
       default:
         return <DashboardPage onNavigate={setCurrentView} />;
-
     }
   };
 
   return (
-    <AppLayout currentView={currentView} onNavigate={setCurrentView}>
-      {renderCurrentView()}
-    </AppLayout>
+    <>
+      <AppLayout currentView={currentView} onNavigate={setCurrentView}>
+        {renderCurrentView()}
+      </AppLayout>
+      <SettingsModal />
+    </>
   );
 }
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AuthenticatedApp />
-    </AuthProvider>
+    <SettingsProvider>
+      <AuthProvider>
+        <AuthenticatedApp />
+      </AuthProvider>
+    </SettingsProvider>
   );
 }
+

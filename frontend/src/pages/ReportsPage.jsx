@@ -21,10 +21,12 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useSettings } from '../context/SettingsContext';
 import api from '../services/api';
 
 export default function ReportsPage() {
   const { user } = useAuth();
+  const { formatCurrency } = useSettings();
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
@@ -341,8 +343,8 @@ export default function ReportsPage() {
                         {k.replace(/([A-Z])/g, ' $1').trim()}
                       </div>
                       <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', marginTop: '0.2rem' }}>
-                        {typeof v === 'number' && k.toLowerCase().includes('rev') || k.toLowerCase().includes('exp') || k.toLowerCase().includes('val') || k.toLowerCase().includes('cost') || k.toLowerCase().includes('income') || k.toLowerCase().includes('budget')
-                          ? `$${v.toLocaleString()}`
+                        {typeof v === 'number' && (k.toLowerCase().includes('rev') || k.toLowerCase().includes('exp') || k.toLowerCase().includes('val') || k.toLowerCase().includes('cost') || k.toLowerCase().includes('income') || k.toLowerCase().includes('budget'))
+                          ? formatCurrency(v)
                           : v}
                       </div>
                     </div>

@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { useSettings } from '../context/SettingsContext';
 
 const CATEGORIES = [
   'All',
@@ -35,6 +36,7 @@ const CATEGORIES = [
 
 export default function InventoryPage() {
   const { role } = useAuth();
+  const { formatCurrency, currency } = useSettings();
   const canManage = role === 'admin' || role === 'officer';
 
   const [items, setItems] = useState([]);
@@ -218,7 +220,7 @@ export default function InventoryPage() {
             <DollarSign size={16} className="text-emerald-500" />
           </div>
           <div style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.4rem', color: '#047857' }}>
-            ${stats?.totalValuation?.toLocaleString()}
+            {formatCurrency(stats?.totalValuation || 0)}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
             Across {stats?.totalItems || 0} catalog assets
@@ -406,7 +408,7 @@ export default function InventoryPage() {
                     </td>
                     <td>
                       <strong style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
-                        ${parseFloat(item.purchase_value).toLocaleString()}
+                        {formatCurrency(item.purchase_value)}
                       </strong>
                     </td>
                     <td style={{ textAlign: 'right' }}>
@@ -494,7 +496,7 @@ export default function InventoryPage() {
                 <span className="badge badge-primary">{selectedItem.category}</span>
                 <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginTop: '0.25rem' }}>{selectedItem.item_name}</h3>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  Location: {selectedItem.location} • Valuation: ${parseFloat(selectedItem.purchase_value).toLocaleString()}
+                  Location: {selectedItem.location} • Valuation: {formatCurrency(selectedItem.purchase_value)}
                 </div>
               </div>
               <button onClick={() => setSelectedItem(null)} className="btn btn-outline" style={{ padding: '0.3rem' }}><X size={18} /></button>
@@ -736,7 +738,7 @@ export default function InventoryPage() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.3rem' }}>Total Purchase Value ($)</label>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.3rem' }}>Total Purchase Value ({currency})</label>
                   <input
                     type="number"
                     step="0.01"

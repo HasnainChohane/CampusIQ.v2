@@ -32,14 +32,17 @@ import {
   Legend, 
   CartesianGrid 
 } from 'recharts';
+import { useSettings } from '../context/SettingsContext';
 import api from '../services/api';
 
 const COLORS = ['#2563eb', '#6366f1', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#14b8a6'];
 
 export default function DashboardPage({ onNavigate }) {
+  const { formatCurrency, settings } = useSettings();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
 
   const loadDashboardData = async () => {
     setLoading(true);
@@ -171,7 +174,7 @@ export default function DashboardPage({ onNavigate }) {
             {kpis?.inventory?.totalUnits || 0}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Asset Value: <strong style={{ color: '#059669' }}>${kpis?.inventory?.totalValue?.toLocaleString()}</strong>
+            Asset Value: <strong style={{ color: '#059669' }}>{formatCurrency(kpis?.inventory?.totalValue)}</strong>
           </div>
         </div>
 
@@ -199,14 +202,15 @@ export default function DashboardPage({ onNavigate }) {
               <DollarSign size={16} />
             </div>
           </div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0.4rem 0 0.2rem', color: '#047857' }}>
-            ${(kpis?.finance?.totalRevenue / 1000).toFixed(1)}k
+          <div style={{ fontSize: '1.45rem', fontWeight: 800, margin: '0.4rem 0 0.2rem', color: '#047857' }}>
+            {formatCurrency(kpis?.finance?.totalRevenue)}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Goal: ${(kpis?.finance?.revenueGoal / 1000).toFixed(0)}k ({kpis?.finance?.revenueGoalProgressPct}%)
+            Target: <strong>{formatCurrency(kpis?.finance?.revenueGoal)}</strong> ({kpis?.finance?.revenueGoalProgressPct}%)
           </div>
         </div>
       </div>
+
 
       {/* AI Department Insights Feed */}
       <div className="card" style={{ background: '#0f172a', color: '#f8fafc', borderColor: '#1e293b' }}>
