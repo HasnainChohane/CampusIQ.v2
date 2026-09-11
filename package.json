@@ -1,0 +1,13 @@
+{
+  "name": "departmenthub-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:backend": "npm.cmd --prefix backend run dev",
+    "dev:frontend": "npm.cmd --prefix frontend run dev",
+    "start:backend": "node backend/src/server.js",
+    "db:init": "node backend/src/db/initDb.js",
+    "db:seed": "node backend/src/db/seedDb.js",
+    "install:all": "npm.cmd --prefix backend install && npm.cmd --prefix frontend install"
+  }
+}
