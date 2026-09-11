@@ -86,7 +86,19 @@ export const api = {
   updateInventoryItem: (id, data) => request(`/inventory/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteInventoryItem: (id) => request(`/inventory/${id}`, { method: 'DELETE' }),
   assignInventoryItem: (id, data) => request(`/inventory/${id}/assign`, { method: 'POST', body: JSON.stringify(data) }),
-  returnInventoryAssignment: (assignmentId) => request(`/inventory/assignments/${assignmentId}/return`, { method: 'PUT' })
+  returnInventoryAssignment: (assignmentId) => request(`/inventory/assignments/${assignmentId}/return`, { method: 'PUT' }),
+
+  // Requests & Approval Workflow
+  getRequests: (params = {}) => {
+    const query = new URLSearchParams(params).toString();
+    return request(`/requests${query ? `?${query}` : ''}`);
+  },
+  getRequestStats: () => request('/requests/stats'),
+  getRequestById: (id) => request(`/requests/${id}`),
+  createRequest: (data) => request('/requests', { method: 'POST', body: JSON.stringify(data) }),
+  updateRequestStatus: (id, data) => request(`/requests/${id}/status`, { method: 'POST', body: JSON.stringify(data) }),
+  addRequestComment: (id, data) => request(`/requests/${id}/comments`, { method: 'POST', body: JSON.stringify(data) }),
+  analyzeRequest: (data) => request('/requests/analyze', { method: 'POST', body: JSON.stringify(data) })
 };
 
 export default api;

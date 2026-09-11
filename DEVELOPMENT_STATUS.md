@@ -2,7 +2,7 @@
 
 **Project**: DepartmentHub (AI-Powered Department Management & Intelligence Platform)  
 **Specification Version**: 1.0 (Hackathon MVP)  
-**Current Milestone**: Steps 1 to 8 Completed (Foundation, Schema, Seed Data, Health Check, Auth, Shell, Live Dashboard, Academic Module, Operations & Inventory)
+**Current Milestone**: Steps 1 to 9 Completed (Foundation, Schema, Seed Data, Health Check, Auth, Shell, Live Dashboard, Academic Module, Operations & Inventory, Requests & Approval Workflow)
 
 ---
 
@@ -38,26 +38,24 @@
   - Faculty management with teaching workload threshold meters ($\ge 12$ hrs alert) and assigned assets.
   - Course catalog with capacity meters, student rosters, and database-backed enrollment transactions.
 - [x] **Step 8: Operations & Inventory Module**:
-  - **Inventory Endpoints & Service**:
-    - `GET /api/inventory`, `GET /api/inventory/stats`, `GET /api/inventory/:id`.
-    - `POST /api/inventory`, `PUT /api/inventory/:id`, `DELETE /api/inventory/:id`.
-    - `POST /api/inventory/:id/assign`: Transaction-backed asset issue to faculty or room location.
-    - `PUT /api/inventory/assignments/:id/return`: Transaction-backed return restoring available stock.
-    - `recordApprovedPurchaseInInventory`: Dedicated service linking purchase approvals to inventory sync.
-  - **Inventory UI**:
-    - 4 KPI cards (Total Asset Valuation $291k, 305 Total Units, Available/Assigned ratios, Damaged equipment flags).
-    - Category filtering pills (Computers, Lab Equipment, Networking, Projectors, Printers, Furniture, Stationery).
-    - Condition badges (`Good`, `Fair`, `Damaged`), low stock meters, and real-time search.
-    - Asset issue modal & assignment history drawer with 1-click return action.
+  - Inventory CRUD, stats, category filters, condition status indicators, and asset issue/return transactions with inventory stock sync.
+- [x] **Step 9: Requests & Approval Workflow with AI Extraction**:
+  - **AI Analysis Service**: Request classification (Purchase, Leave, Maintenance, General), priority calculation, structured JSON extraction (item, quantity, purpose, estimated cost), and officer-friendly summary generation.
+  - **Requests Controller & API**:
+    - `GET /api/requests` (filters: search, type, status, priority, onlyMine), `GET /api/requests/stats`, `GET /api/requests/:id`.
+    - `POST /api/requests` (automatic AI analysis on submit), `POST /api/requests/analyze` (live typing analysis preview).
+    - `POST /api/requests/:id/status` (Reviewer actions: Approve, Under Review, Return with Remarks, Reject).
+    - `POST /api/requests/:id/comments` (Discussion log).
+  - **Connected Purchase Workflow**: Approving a purchase request atomically records an expense in `expenses`, increments/creates the item in `inventory`, and links the records.
+  - **Requests UI**: Tab switching (All, My Requests, Pending Action), 1-click demo scenario button (*"We need 5 new desktop computers for the AI laboratory."*), AI live extraction preview, reviewer action panel, and chronological audit history timeline.
 
 ---
 
 ## 🟡 In Progress / Next Up
-- [ ] **Step 9 (Next Immediate Phase)**: Requests & Approval Workflow with AI Extraction (Leave, Purchase, Maintenance, General requests, approval audit logs, reviewer actions, and downstream purchase sync)
-- [ ] **Step 10**: Finance & Budget Tracking
+- [ ] **Step 10 (Next Immediate Phase)**: Finance & Budget Tracking (Revenue CRUD, Expense CRUD, Budget period management, Revenue target tracking, and financial calculations)
 - [ ] **Step 11**: PDF Reports Generation
 - [ ] **Step 12-13**: Grounded AI Assistant & Department Insights
-- [ ] **Step 14-15**: End-to-End Demo Workflow & Polish
+- [ ] **Step 14-15**: End-to-End Demo Workflow & Final Polish
 
 ---
 
