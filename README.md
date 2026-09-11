@@ -1,14 +1,57 @@
-# DepartmentHub — AI-Powered Department Management & Intelligence Platform
+# DepartmentHub — AI-Powered Academic & Department Intelligence Platform
 
-> **Hackathon MVP v1.0**  
-> Centralized departmental platform for managing academic, operational, administrative, and financial activities with an integrated AI intelligence layer.
+> **Comprehensive Department Management & Intelligence Platform**  
+> Centralized workspace for managing academic curricula, faculty workloads, physical asset inventory, operational requests, financial budgets, and automated audit reports with an integrated, zero-hallucination Grounded AI intelligence layer.
+
+---
+
+## 🌟 Key Capabilities & Architecture
+
+1. **🇵🇰 Regional Localization & Multi-Currency System**:
+   - **Default Currency**: Pakistani Rupee (`PKR` / `Rs.`) configured across all metrics, transaction ledgers, budget charts, and valuation figures.
+   - **Interactive Settings Studio**: Accessible via the gear icon on the top-right header, allowing live switching between **PKR (Rs.)**, **USD ($)**, and **EUR (€)** with real-time exchange rate calculation.
+   - **Institution & Department Customization**: Configurable University and Department metadata (e.g. *NUST*, *FAST-NUCES*, *Punjab University*, *QAU*).
+
+2. **📌 Fixed-Sidebar Viewport Layout**:
+   - Sticky, non-scrolling left navigation sidebar locked to the screen viewport height (`100vh`).
+   - Main page workspace scrolls smoothly and independently with a persistent top navigation bar.
+
+3. **👥 Authentic Regional Dummy Dataset**:
+   - Pre-seeded with authentic Pakistani faculty, administrative staff, student roll numbers (`2023-CS-041`), courses, and realistic financial figures in PKR.
+
+4. **🎓 Academic & Curriculum Management**:
+   - Track students, GPA distributions, and academic standing watchlist.
+   - Monitor faculty credit-hour workloads with safety threshold warnings ($\ge 12$ credit hours/week).
+   - Real-time course capacity utilization and database-backed student enrollment roster.
+
+5. **📦 Operations & Physical Asset Inventory**:
+   - Hardware, lab equipment, computing nodes, and projectors with condition tags (`Good`, `Fair`, `Damaged`).
+   - Dynamic asset assignment tracking (custody history by faculty member or lab location) with automated return workflows.
+
+6. **📝 Requests & Approval Workflow with AI Extraction**:
+   - Multi-role approval pipeline (`Pending` → `Under Review` → `Approved` / `Returned` / `Rejected`).
+   - Instant NLP text analysis: automatically classifies request type, priority, and extracts structured JSON parameters (items, quantities, dates, budget requirements).
+   - **Connected Purchase Workflow**: Approving equipment purchase atomically records an expense entry and adds the asset into physical inventory.
+
+7. **💰 Financial & Budget Management**:
+   - Real-time tracking of research grants, tuition allocations, and operational expense ledgers.
+   - Budget period utilization, revenue goal progress indicators, and interactive monthly trend charts.
+
+8. **🤖 Grounded AI Intelligence Assistant**:
+   - Zero-hallucination natural language Q&A engine executing deterministic SQL queries against local MySQL database (`departmenthub_db`).
+   - Displays real-time grounding verification badges, confidence scores, supporting SQL data rows, and direct module navigation links.
+
+9. **📄 Verified Management Reports & PDF Generator**:
+   - Instant 1-click generation of verified Academic, Financial, Inventory, and Procurement audit reports.
+   - Synthesizes grounded AI executive summaries with interactive printable preview and PDF export.
 
 ---
 
 ## 1. Prerequisites
-- **Node.js**: v18.0+ or v24.x
-- **XAMPP / MySQL**: MySQL/MariaDB running on default port `3306` (or standalone MySQL)
-- **Web Browser**: Modern Chromium or Firefox
+
+- **Node.js**: v18.0+ or v20.x / v22.x / v24.x
+- **XAMPP / MySQL**: MySQL or MariaDB running on default port `3306`
+- **Web Browser**: Modern Chromium (Chrome / Edge) or Firefox
 
 ---
 
@@ -44,90 +87,121 @@ npm install
 ```
 
 ### Step 4: Initialize and Seed MySQL Database
-Run the automated schema and seed runner:
+Run the automated schema creation and seeding script:
 ```bash
 cd backend
 npm run db:init
 ```
-*This command creates the database `departmenthub_db`, establishes all 16 tables with foreign keys and indexes from `database/schema.sql`, and inserts 204+ realistic records from `database/seed.sql`.*
+*This command initializes `departmenthub_db`, configures all 16 relational tables with foreign keys and indexes from `database/schema.sql`, and inserts 200+ realistic Pakistani records from `database/seed.sql`.*
 
 ---
 
-## 3. Starting the Application
+## 3. Running the Application
 
-### Option A: Start Services Individually
-1. **Start Backend API (Port 5000)**:
+### Option A: Start Services
+1. **Start Backend Server (Port 5000)**:
    ```bash
    cd backend
    npm run dev
-   # Server runs at http://localhost:5000
+   # API running at http://localhost:5000
    # Health check: http://localhost:5000/api/health
    # DB health:    http://localhost:5000/api/health/db
    ```
 
-2. **Start Frontend (Port 5173)**:
+2. **Start Frontend Client (Port 5173)**:
    ```bash
    cd frontend
    npm run dev
-   # Application opens at http://localhost:5173
+   # Web app opens at http://localhost:5173
    ```
 
 ---
 
 ## 4. Seeded Test Accounts
 
-All seeded accounts use the default password: **`Password123!`**
+All demo accounts use the standard password: **`Password123!`**
 
-| Role | Email | Name | Capabilities |
+| Role | Email | Name | Designation & Access |
 | :--- | :--- | :--- | :--- |
-| **Administrator** | `admin@departmenthub.edu` | Dr. Eleanor Vance | Full department management, approval authority, financial oversight, report exports |
-| **Officer / Manager** | `officer@departmenthub.edu` | Marcus Thorne | Review requests, inventory tracking, budget & expense recording |
-| **Faculty / Department Head** | `faculty@departmenthub.edu` | Dr. Alan Turing | Submit & track requests, course & workload overview, assigned assets |
-| **Staff Member** | `staff@departmenthub.edu` | Sarah Jenkins | General and supply purchase requests |
+| **Administrator** | `admin@departmenthub.edu` | **Dr. Khurram Nadeem** | Professor & Department Chair • Full governance, financial authorization, executive report generation |
+| **Officer / Manager** | `officer@departmenthub.edu` | **Syed Muhammad Ali** | Senior Administrative Officer • Request reviewer, asset issue/return, expense recording |
+| **Faculty Member** | `faculty@departmenthub.edu` | **Dr. Ayesha Khan** | Associate Professor (AI & ML) • Request submission, course roster & workload overview, assigned assets |
+| **Staff Member** | `staff@departmenthub.edu` | **Muhammad Rizwan** | Senior Hardware Lab Coordinator • Hardware maintenance and procurement requests |
+
+> **Tip:** You can switch between demo accounts instantly from the top-right role dropdown in the application header without having to re-login.
 
 ---
 
-## 5. Health Check API Endpoints
+## 5. API Endpoints Overview
 
-- **`GET /api/health`**: Returns backend runtime status, uptime, node version, and environment.
-- **`GET /api/health/db`**: Returns live MySQL connection status, ping latency, and real-time count of all 16 database tables.
+| Category | Method & Path | Description | Access |
+| :--- | :--- | :--- | :--- |
+| **System** | `GET /api/health` | Server runtime status, uptime & environment | Public |
+| **System** | `GET /api/health/db` | Real-time MySQL connection latency & table metrics | Public |
+| **Auth** | `POST /api/auth/login` | Authenticate user & issue JWT token | Public |
+| **Auth** | `GET /api/auth/me` | Retrieve current authenticated user profile | Authenticated |
+| **Dashboard** | `GET /api/dashboard/stats` | Aggregated KPIs, charts, insights & recent feeds | Authenticated |
+| **Academic** | `GET /api/students` | Search and filter student records & GPAs | Authenticated |
+| **Academic** | `GET /api/faculty` | Faculty directory, teaching hours & workload status | Authenticated |
+| **Academic** | `GET /api/courses` | Course catalog, capacity meters & enrolled rosters | Authenticated |
+| **Academic** | `POST /api/courses/enroll` | Enroll a student into an active course offering | Officer / Admin |
+| **Inventory** | `GET /api/inventory` | Hardware & physical asset registry with filters | Authenticated |
+| **Inventory** | `POST /api/inventory` | Create new inventory asset | Officer / Admin |
+| **Inventory** | `POST /api/inventory/:id/assign` | Assign equipment to faculty or lab location | Officer / Admin |
+| **Inventory** | `POST /api/inventory/assignments/:id/return` | Mark assigned asset as returned to stock | Officer / Admin |
+| **Requests** | `GET /api/requests` | List operational & procurement requests | Authenticated |
+| **Requests** | `POST /api/requests` | Submit request (triggers automated AI extraction) | Authenticated |
+| **Requests** | `POST /api/requests/analyze` | Live interactive AI text classification & JSON preview | Authenticated |
+| **Requests** | `POST /api/requests/:id/status` | Approve, Return with Remarks, or Reject request | Officer / Admin |
+| **Finance** | `GET /api/finance/overview` | Revenue, expenses, net surplus, budget utilization | Officer / Admin |
+| **Finance** | `POST /api/finance/revenue` | Record external grant or income entry | Officer / Admin |
+| **Finance** | `POST /api/finance/expenses` | Record operational expense item | Officer / Admin |
+| **Finance** | `POST /api/finance/budgets` | Allocate new operating budget period | Officer / Admin |
+| **AI Assistant** | `GET /api/ai/suggestions` | Suggested natural language database queries | Authenticated |
+| **AI Assistant** | `POST /api/ai/query` | Grounded SQL execution with data verification | Authenticated |
+| **Reports** | `GET /api/reports` | List historical generated reports archive | Officer / Admin |
+| **Reports** | `POST /api/reports/generate` | Synthesize live report with AI summary & printable export | Officer / Admin |
 
 ---
 
-## 6. Project Architecture
+## 6. Project Directory Structure
 
 ```
 /dphub
 ├── backend/
 │   ├── src/
-│   │   ├── controllers/      # Route controllers (healthController, etc.)
-│   │   ├── routes/           # Express route definitions
-│   │   ├── services/         # Business logic & AI service layers
-│   │   ├── middleware/       # Error handling, JWT auth guards
-│   │   ├── db/               # MySQL pool connection & seed scripts
-│   │   ├── app.js            # Express application setup
+│   │   ├── controllers/      # Route controllers (academic, inventory, requests, finance, reports, ai)
+│   │   ├── routes/           # Express REST route definitions
+│   │   ├── services/         # Business logic, AI analysis & grounded SQL engine
+│   │   ├── middleware/       # JWT auth, RBAC role guards, error handling
+│   │   ├── db/               # MySQL connection pool & seed runners
+│   │   ├── app.js            # Express app configuration & middleware
 │   │   └── server.js         # HTTP server entry point
 │   ├── package.json
 │   └── .env
 ├── frontend/
 │   ├── src/
-│   │   ├── components/       # Reusable UI components & HealthDashboard
-│   │   ├── pages/            # View pages (Dashboard, Academic, Finance, etc.)
-│   │   ├── layouts/          # Application shell (Sidebar, Topbar)
-│   │   ├── services/         # API HTTP client
-│   │   ├── hooks/            # Custom React hooks
-│   │   ├── utils/            # Formatting & calculation utilities
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css         # Design system styling & design tokens
+│   │   ├── components/       # Reusable UI components & SettingsModal
+│   │   ├── context/          # AuthContext & SettingsContext (Currency, Regional configs)
+│   │   ├── layouts/          # AppLayout shell (Fixed sticky sidebar, Header, Nav)
+│   │   ├── pages/            # Dashboard, Academic, Inventory, Requests, Finance, Reports, AI Assistant, Health
+│   │   ├── services/         # Axios API client
+│   │   ├── App.jsx           # Routing & global providers
+│   │   ├── main.jsx          # Entry point
+│   │   └── index.css         # Design system tokens & typography
 │   ├── package.json
 │   └── vite.config.js
 ├── database/
 │   ├── schema.sql            # Full MySQL schema (16 tables, constraints, indexes)
-│   └── seed.sql              # Realistic seed data (204 records)
+│   └── seed.sql              # Realistic Pakistani dataset (200+ records)
 ├── docs/
 │   ├── PRD.md
 │   └── API_NOTES.md
-├── DEVELOPMENT_STATUS.md     # Development roadmap & milestone tracker
+├── DEVELOPMENT_STATUS.md     # Development milestone verification tracker
 └── README.md
 ```
+
+---
+
+## 7. License & Compliance
+Built with ❤️ for advanced institutional management and academic operations.

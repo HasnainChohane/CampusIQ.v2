@@ -2,7 +2,7 @@
 
 **Project**: DepartmentHub (AI-Powered Department Management & Intelligence Platform)  
 **Specification Version**: 1.0 (Hackathon MVP)  
-**Current Milestone**: Steps 1 to 15 Completed — FULL MVP ACTIVE & VERIFIED
+**Current Milestone**: Steps 1 to 15 Completed — FULL MVP ACTIVE, LOCALIZED & VERIFIED
 
 ---
 
@@ -16,21 +16,21 @@
 - [x] **Step 3: Realistic Seed Dataset (`database/seed.sql`) & DB Connection**:
   - 1 Department (Computer Science & Engineering)
   - 6 Users across all roles (`admin`, `officer`, `faculty`, `staff`) with bcrypt-hashed passwords (`Password123!`)
-  - 30 Students, 10 Faculty members, 12 Academic Courses, 30 Enrollments
+  - 30 Students with authentic Pakistani roll numbers (e.g. `2023-CS-041`), 10 Faculty members, 12 Academic Courses, 30 Enrollments
   - 22 Inventory Records across 7 categories, 6 Assignments
   - 32 Requests across Leave, Purchase, Maintenance, General
-  - 12 Revenue, 24 Expense transactions, 2 Operating Budgets, 2 Goals, 3 Reports
+  - 12 Revenue, 24 Expense transactions in PKR, 2 Operating Budgets, 2 Goals, 3 Reports
   - Real-time Health checks (`GET /api/health`, `GET /api/health/db`)
 - [x] **Step 4: Authentication System**:
   - `POST /api/auth/login` (Bcrypt password validation, JWT generation with 7-day expiry)
   - `GET /api/auth/me` (Token-based user session verification)
   - `GET /api/auth/demo-accounts` (Quick listing of seeded accounts)
   - `authenticateToken` and `requireRole` middleware
-- [x] **Step 5: Application Shell & UI Shells**:
-  - `LoginPage.jsx` with 1-click test role credentials (Admin, Officer, Faculty, Staff)
+- [x] **Step 5: Application Shell, Fixed Sticky Sidebar & Settings**:
+  - `LoginPage.jsx` with 1-click test role credentials (Admin: Dr. Khurram Nadeem, Officer: Syed Muhammad Ali, Faculty: Dr. Ayesha Khan, Staff: Muhammad Rizwan)
   - `AuthContext.jsx` with session persistence in `localStorage` and fast role-switching
-  - `AppLayout.jsx` with desktop-first responsive sidebar, top navbar, department pill, role indicator, and live role switcher
-  - Module shell views created
+  - `SettingsContext.jsx` & `SettingsModal.jsx`: Default PKR currency with dynamic live switching to USD ($) / EUR (€) and exchange rate adjustments
+  - `AppLayout.jsx` with fixed, non-scrolling sticky viewport sidebar (`100vh`) and independent main workspace scroll
 - [x] **Step 6: Dashboard APIs & Live Metric UI**:
   - `GET /api/dashboard/stats`: Database-grounded aggregations for KPIs, Area chart, Expense Donut chart, Course Enrollment chart, live AI department insights, and recent request activity feed.
 - [x] **Step 7: Academic Module (Students, Faculty, Courses & Enrollments)**:
@@ -49,7 +49,7 @@
   - **Connected Purchase Workflow**: Approving a purchase request atomically records an expense in `expenses`, increments/creates the item in `inventory`, and links the records.
   - **Requests UI**: Tab switching (All, My Requests, Pending Action), 1-click demo scenario button (*"We need 5 new desktop computers for the AI laboratory."*), AI live extraction preview, reviewer action panel, and chronological audit history timeline.
 - [x] **Step 10: Finance & Budget Tracking Module**:
-  - `GET /api/finance/overview` (Total revenue, expenses, net balance, margin %, budget utilization %, revenue goal progress %, category breakdowns, monthly trends).
+  - `GET /api/finance/overview` (Total revenue, expenses, net balance, margin %, budget utilization %, revenue goal progress %, category breakdowns, monthly trends in PKR/USD).
   - Revenue & Expense full CRUD APIs and modals.
   - Budget periods and revenue goals tracking.
   - `FinancePage.jsx` with Recharts trends, expense category distribution, dynamic color-coded KPIs, and transaction ledgers.
@@ -63,8 +63,8 @@
   - Natural-language query pipeline executing deterministic SQL queries against MySQL (`departmenthub_db`).
   - Zero-hallucination guarantee with confidence badge, markdown explanation, metric badges, live supporting SQL record tables, and direct module action links.
   - `AiAssistantPage.jsx` with chat stream, 1-click suggestion chips, real-time typing inquiry bar, and seamless navigation.
-- [x] **Step 14 & 15: End-to-End Demo Workflow & Synchronization**:
-  - Verified end-to-end user flows across all 4 roles (Admin, Officer, Faculty, Staff).
+- [x] **Step 14 & 15: Regional Localization, End-to-End Demo Workflow & Synchronization**:
+  - Regional Pakistani names, courses, and PKR figures verified end-to-end across all 4 roles.
   - Synchronized and mirrored all project files to `C:\xampp\htdocs\CampusIQ.v2\` for user IDE Explorer visibility.
   - Full build pass (`npm run build` exits 0 with no errors).
 

@@ -61,10 +61,11 @@ export default function AppLayout({ currentView, onNavigate, children }) {
   const roleStyle = getRoleBadgeStyle(role);
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-app)' }}>
-      {/* Sidebar Navigation */}
+    <div style={{ display: 'flex', height: '100vh', width: '100vw', overflow: 'hidden', background: 'var(--bg-app)' }}>
+      {/* Sidebar Navigation - Fixed & Sticky to Viewport */}
       <aside style={{
         width: '260px',
+        height: '100vh',
         background: '#0f172a',
         color: '#f8fafc',
         display: 'flex',
@@ -72,7 +73,8 @@ export default function AppLayout({ currentView, onNavigate, children }) {
         flexShrink: 0,
         borderRight: '1px solid #1e293b',
         zIndex: 50,
-        transition: 'all 0.2s ease'
+        overflowY: 'auto',
+        position: 'relative'
       }}>
         {/* Brand Header */}
         <div style={{ padding: '1.25rem 1.25rem', borderBottom: '1px solid #1e293b', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -170,8 +172,8 @@ export default function AppLayout({ currentView, onNavigate, children }) {
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+      {/* Main Content Area - Scrolls independently */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, height: '100vh', overflowY: 'auto', position: 'relative' }}>
         {/* Top Navbar */}
         <header style={{
           height: '64px',
@@ -183,7 +185,8 @@ export default function AppLayout({ currentView, onNavigate, children }) {
           padding: '0 1.5rem',
           position: 'sticky',
           top: 0,
-          zIndex: 30
+          zIndex: 30,
+          flexShrink: 0
         }}>
           {/* Left: Current Active Title & Dept */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -329,7 +332,7 @@ export default function AppLayout({ currentView, onNavigate, children }) {
 
 
         {/* Page Content Body */}
-        <main style={{ flex: 1, padding: '1.75rem 2rem', overflowY: 'auto' }}>
+        <main style={{ flex: 1, padding: '1.75rem 2rem' }}>
           {children}
         </main>
       </div>
