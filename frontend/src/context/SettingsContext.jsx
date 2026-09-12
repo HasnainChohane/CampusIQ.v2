@@ -9,16 +9,30 @@ const DEFAULT_SETTINGS = {
   dateFormat: 'DD/MM/YYYY',
   universityName: 'National University of Computer & Emerging Sciences',
   departmentName: 'Department of Computer Science & Software Engineering',
+  departmentCode: 'CS-SE',
+  campusBuilding: 'Al-Khawarizmi Computing Complex - CS Wing',
+  departmentIcon: 'Building2', // 'Building2' | 'Laptop' | 'GraduationCap' | 'Cpu' | 'Layers' | 'School'
   activeTerm: 'Fall 2026',
   compactMode: false,
-  soundAlerts: true
+  soundAlerts: true,
+  dashboardCardsOrder: ['financial', 'categories', 'courses', 'requests', 'insights'],
+  kpiPreferences: ['students', 'faculty', 'courses', 'inventory', 'requests', 'revenue']
 };
 
 export function SettingsProvider({ children }) {
   const [settings, setSettings] = useState(() => {
     try {
       const saved = localStorage.getItem('dphub_settings');
-      return saved ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) } : DEFAULT_SETTINGS;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          ...DEFAULT_SETTINGS,
+          ...parsed,
+          dashboardCardsOrder: parsed.dashboardCardsOrder || DEFAULT_SETTINGS.dashboardCardsOrder,
+          kpiPreferences: parsed.kpiPreferences || DEFAULT_SETTINGS.kpiPreferences
+        };
+      }
+      return DEFAULT_SETTINGS;
     } catch (e) {
       return DEFAULT_SETTINGS;
     }

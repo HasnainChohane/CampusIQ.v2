@@ -26,7 +26,7 @@ async function startServer() {
 
     app.listen(PORT, () => {
       console.log(`====================================================`);
-      console.log(`🚀 DepartmentHub Backend API Server running on port ${PORT}`);
+      console.log(`🚀 CampusIQ Backend API Server running on port ${PORT}`);
       console.log(`   Health Check: http://localhost:${PORT}/api/health`);
       console.log(`   DB Health:    http://localhost:${PORT}/api/health/db`);
       console.log(`   Environment:  ${process.env.NODE_ENV || 'development'}`);

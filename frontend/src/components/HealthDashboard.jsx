@@ -41,7 +41,7 @@ export default function HealthDashboard() {
       setDbHealth(dbRes);
       setLastChecked(new Date().toLocaleTimeString());
     } catch (err) {
-      setError(err.message || 'Failed to reach DepartmentHub backend API.');
+      setError(err.message || 'Failed to reach CampusIQ backend API.');
     } finally {
       setLoading(false);
     }
@@ -76,17 +76,17 @@ export default function HealthDashboard() {
         <div style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <span className="badge badge-primary" style={{ background: 'rgba(37,99,235,0.3)', color: '#93c5fd', borderColor: 'rgba(147,197,253,0.3)' }}>
-              First Task — Foundation Verified
+              Foundation & Services Online
             </span>
             <span style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
               XAMPP MySQL • Node.js Express • Vite React
             </span>
           </div>
           <h1 style={{ fontSize: '1.85rem', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '0.5rem' }}>
-            DepartmentHub Management & Intelligence Platform
+            CampusIQ Management & Intelligence Platform
           </h1>
           <p style={{ color: '#cbd5e1', maxWidth: '800px', fontSize: '0.95rem', lineHeight: 1.6 }}>
-            Phase 1 Foundation established. Project architecture, MySQL database schema, 
+            CampusIQ System Architecture, MySQL database schema, 
             realistic seed datasets, environment variables, connection pools, and real-time health services are online and operational.
           </p>
 
@@ -153,7 +153,7 @@ export default function HealthDashboard() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.5rem', fontSize: '0.875rem' }}>
               <span style={{ color: 'var(--text-muted)' }}>Service Name:</span>
-              <strong style={{ fontWeight: 600 }}>{systemHealth?.service || 'DepartmentHub Backend'}</strong>
+              <strong style={{ fontWeight: 600 }}>{systemHealth?.service || 'CampusIQ Backend'}</strong>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.5rem', fontSize: '0.875rem' }}>
               <span style={{ color: 'var(--text-muted)' }}>Environment:</span>

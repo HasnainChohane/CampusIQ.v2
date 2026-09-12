@@ -41,43 +41,41 @@ export async function getDashboardStats(req, res, next) {
     const budgetUtilizationPct = budgetAllocated > 0 ? Math.min(100, Math.round((totalExpenses / budgetAllocated) * 100)) : 0;
     const revenueGoalProgressPct = revenueGoal > 0 ? Math.min(100, Math.round((totalRevenue / revenueGoal) * 100)) : 0;
 
-    // 3. Monthly Financial Trends (Expenses and Revenue by month)
-    const [monthlyExpenses] = await pool.query(
-      `SELECT DATE_FORMAT(date, '%b %Y') as month_label, DATE_FORMAT(date, '%Y-%m') as month_sort, SUM(amount) as amount 
-       FROM expenses 
-       WHERE department_id = ? 
-       GROUP BY month_sort, month_label 
-       ORDER BY month_sort ASC 
-       LIMIT 8`,
-      [departmentId]
+    // 3. Monthly Financial Trends (Unified Chronological Last 8 Months)
+    const [trendRows] = await pool.query(
+      `SELECT 
+        m.month_label,
+        m.month_sort,
+        COALESCE(r.revenue, 0) as revenue,
+        COALESCE(e.expenses, 0) as expenses
+      FROM (
+        SELECT DATE_FORMAT(date, '%b %Y') as month_label, DATE_FORMAT(date, '%Y-%m') as month_sort FROM expenses WHERE department_id = ?
+        UNION
+        SELECT DATE_FORMAT(date, '%b %Y') as month_label, DATE_FORMAT(date, '%Y-%m') as month_sort FROM revenue WHERE department_id = ?
+      ) m
+      LEFT JOIN (
+        SELECT DATE_FORMAT(date, '%Y-%m') as month_sort, SUM(amount) as revenue
+        FROM revenue WHERE department_id = ? GROUP BY month_sort
+      ) r ON m.month_sort = r.month_sort
+      LEFT JOIN (
+        SELECT DATE_FORMAT(date, '%Y-%m') as month_sort, SUM(amount) as expenses
+        FROM expenses WHERE department_id = ? GROUP BY month_sort
+      ) e ON m.month_sort = e.month_sort
+      ORDER BY m.month_sort DESC
+      LIMIT 8`,
+      [departmentId, departmentId, departmentId, departmentId]
     );
 
-    const [monthlyRevenue] = await pool.query(
-      `SELECT DATE_FORMAT(date, '%b %Y') as month_label, DATE_FORMAT(date, '%Y-%m') as month_sort, SUM(amount) as amount 
-       FROM revenue 
-       WHERE department_id = ? 
-       GROUP BY month_sort, month_label 
-       ORDER BY month_sort ASC 
-       LIMIT 8`,
-      [departmentId]
-    );
-
-    // Merge monthly trends
-    const monthMap = {};
-    monthlyExpenses.forEach(e => {
-      monthMap[e.month_label] = { month: e.month_label, expenses: parseFloat(e.amount), revenue: 0 };
-    });
-    monthlyRevenue.forEach(r => {
-      if (!monthMap[r.month_label]) {
-        monthMap[r.month_label] = { month: r.month_label, expenses: 0, revenue: parseFloat(r.amount) };
-      } else {
-        monthMap[r.month_label].revenue = parseFloat(r.amount);
-      }
-    });
-    const financialTrends = Object.values(monthMap);
+    // Reverse to chronological order (oldest to newest)
+    const financialTrends = trendRows.reverse().map(row => ({
+      month: row.month_label,
+      month_sort: row.month_sort,
+      revenue: parseFloat(row.revenue) || 0,
+      expenses: parseFloat(row.expenses) || 0
+    }));
 
     // 4. Expense Categories Breakdown
-    const [expenseCategories] = await pool.query(
+    const [expenseCategoryRows] = await pool.query(
       `SELECT category as name, SUM(amount) as value, COUNT(*) as count 
        FROM expenses 
        WHERE department_id = ? 
@@ -85,6 +83,12 @@ export async function getDashboardStats(req, res, next) {
        ORDER BY value DESC`,
       [departmentId]
     );
+
+    const expenseCategories = expenseCategoryRows.map(c => ({
+      name: c.name,
+      value: parseFloat(c.value) || 0,
+      count: c.count
+    }));
 
     // 5. Enrollment Distribution & High Capacity Courses
     const [topCourses] = await pool.query(

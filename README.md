@@ -1,4 +1,4 @@
-# DepartmentHub — AI-Powered Academic & Department Intelligence Platform
+# CampusIQ — AI-Powered Academic & Department Intelligence Platform
 
 > **Comprehensive Department Management & Intelligence Platform**  
 > Centralized workspace for managing academic curricula, faculty workloads, physical asset inventory, operational requests, financial budgets, and automated audit reports with an integrated, zero-hallucination Grounded AI intelligence layer.
@@ -12,12 +12,14 @@
    - **Interactive Settings Studio**: Accessible via the gear icon on the top-right header, allowing live switching between **PKR (Rs.)**, **USD ($)**, and **EUR (€)** with real-time exchange rate calculation.
    - **Institution & Department Customization**: Configurable University and Department metadata (e.g. *NUST*, *FAST-NUCES*, *Punjab University*, *QAU*).
 
-2. **📌 Fixed-Sidebar Viewport Layout**:
+2. **📌 Fixed-Sidebar Viewport Layout & Dynamic 2-per-row Rearrangeable Cards**:
    - Sticky, non-scrolling left navigation sidebar locked to the screen viewport height (`100vh`).
    - Main page workspace scrolls smoothly and independently with a persistent top navigation bar.
+   - Interactive Executive Dashboard with 2-cards-per-row grid layout and dedicated top-right drag handles.
 
-3. **👥 Authentic Regional Dummy Dataset**:
+3. **👥 Authentic Regional Dataset & Personalized User Profiles**:
    - Pre-seeded with authentic Pakistani faculty, administrative staff, student roll numbers (`2023-CS-041`), courses, and realistic financial figures in PKR.
+   - Dedicated User Profile and Department Profile customization settings with instant persistence.
 
 4. **🎓 Academic & Curriculum Management**:
    - Track students, GPA distributions, and academic standing watchlist.
@@ -72,7 +74,7 @@ DB_NAME=departmenthub_db
 
 PORT=5000
 CLIENT_URL=http://localhost:5173
-JWT_SECRET=departmenthub_jwt_secure_secret_key_2026_mvp
+JWT_SECRET=campusiq_jwt_secure_secret_key_2026
 ```
 
 ### Step 3: Install Dependencies
@@ -167,7 +169,7 @@ All demo accounts use the standard password: **`Password123!`**
 ## 6. Project Directory Structure
 
 ```
-/dphub
+/campusiq
 ├── backend/
 │   ├── src/
 │   │   ├── controllers/      # Route controllers (academic, inventory, requests, finance, reports, ai)

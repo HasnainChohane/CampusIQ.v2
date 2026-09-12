@@ -385,7 +385,7 @@ export default function ReportsPage() {
 
               {/* Report Footer */}
               <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#94a3b8' }}>
-                <div>DepartmentHub Enterprise Management Intelligence • Confidential</div>
+                <div>CampusIQ Enterprise Management Intelligence • Confidential</div>
                 <div>Authorized Signoff: ____________________</div>
               </div>
             </div>

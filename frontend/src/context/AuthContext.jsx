@@ -14,7 +14,18 @@ export function AuthProvider({ children }) {
       if (token) {
         try {
           const res = await api.getMe();
-          setUser(res.data.user);
+          let userData = res.data.user;
+          const userKey = `dphub_user_profile_${userData.email}`;
+          const savedProfile = localStorage.getItem(userKey);
+          if (savedProfile) {
+            try {
+              const parsed = JSON.parse(savedProfile);
+              if (parsed) {
+                userData = { ...userData, ...parsed };
+              }
+            } catch (e) {}
+          }
+          setUser(userData);
         } catch (error) {
           console.warn('Session expired or invalid token:', error.message);
           logout();
@@ -30,13 +41,36 @@ export function AuthProvider({ children }) {
     if (res.success && res.data.token) {
       localStorage.setItem('dphub_token', res.data.token);
       setToken(res.data.token);
-      setUser(res.data.user);
-      return res.data.user;
+      let userData = res.data.user;
+      const userKey = `dphub_user_profile_${userData.email}`;
+      const savedProfile = localStorage.getItem(userKey);
+      if (savedProfile) {
+        try {
+          const parsed = JSON.parse(savedProfile);
+          if (parsed) {
+            userData = { ...userData, ...parsed };
+          }
+        } catch (e) {}
+      }
+      setUser(userData);
+      return userData;
     }
   };
 
   const switchUserFast = async (email) => {
     return login(email, 'Password123!');
+  };
+
+  const updateUserProfile = (updatedFields) => {
+    setUser(prev => {
+      const nextUser = { ...prev, ...updatedFields };
+      if (nextUser?.email) {
+        try {
+          localStorage.setItem(`dphub_user_profile_${nextUser.email}`, JSON.stringify(nextUser));
+        } catch (e) {}
+      }
+      return nextUser;
+    });
   };
 
   const logout = () => {
@@ -54,6 +88,7 @@ export function AuthProvider({ children }) {
       role: user?.role || null,
       login,
       switchUserFast,
+      updateUserProfile,
       logout
     }}>
       {children}

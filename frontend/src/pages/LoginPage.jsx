@@ -110,10 +110,10 @@ export default function LoginPage() {
               </div>
               <div>
                 <h2 style={{ fontSize: '1.4rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#ffffff' }}>
-                  DepartmentHub
+                  CampusIQ
                 </h2>
                 <span style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  AI-Powered Management MVP
+                  Academic & Dept Intelligence
                 </span>
               </div>
             </div>

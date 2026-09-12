@@ -29,7 +29,7 @@ function AuthenticatedApp() {
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
           <div className="pulse-dot" style={{ width: '16px', height: '16px', color: 'var(--primary)' }}></div>
-          <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Loading DepartmentHub Session...</span>
+          <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Loading CampusIQ Session...</span>
         </div>
       </div>
     );

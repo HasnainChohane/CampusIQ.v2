@@ -71,7 +71,7 @@ export async function processAiQuery(req, res, next) {
       query,
       timestamp: new Date().toISOString(),
       confidence: '100% Deterministic Grounding',
-      source: 'DepartmentHub Live MySQL Database',
+      source: 'CampusIQ Live MySQL Database',
       answer: '',
       metrics: [],
       data: [],
